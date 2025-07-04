@@ -1,0 +1,119 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Potta+One&display=swap"
+      rel="stylesheet"
+    />
+    <title>Datos</title>
+  </head>
+  <!-- Header -->
+  <div id="finalModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close-button">&times;</span>
+      <h2>¡Perfecto! 🎉</h2>
+      <p>
+        Tus respuestas fueron: <strong>8</strong>, <strong>4</strong> y
+        <strong>0</strong>.
+      </p>
+      <p>
+        Utiliza este número para desbloquear el siguiente paso.
+      </p>
+    </div>
+  </div>
+  <body>
+    <header>
+      <nav>
+        <a href="./index.html" class="logo"><img src="./RANA.png"/>23M Labs</a>
+        <ul class="nav-links">
+          <li><a href="#proyecto">La Plaga Azul</a></li>
+          <li><a href="#tarea">Tu Misión</a></li>
+          <li><a href="datos.html">Comprobador de datos</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Banner/Hero Section -->
+    <section class="hero" id="inicio">
+      <div class="hero-content">
+        <h1>COMPROBADOR DE DATOS</h1>
+        <p>
+          Al ingresar un resultado correcto, se desbloqueará el siguiente
+          problema
+        </p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+      <div class="inputs-container">
+        <div class="input-container">
+          <h1>1. Ingrese el resultado n1</h1>
+          <img src="img/cuenta1.png" alt="Cuenta 1" width="150" />
+          <input class="input-type" type="number" id="n1" />
+          <button class="input-button">Enviar</button>
+          <p class="feedback"></p>
+          <!-- Mensaje de respuesta -->
+        </div>
+
+        <div class="input-container hidden">
+          <h1>2. Ingrese el resultado n2</h1>
+          <img src="img/cuenta2.png" alt="Cuenta 2" width="150" />
+          <input class="input-type" type="number" id="n2" />
+          <button class="input-button">Enviar</button>
+          <p class="feedback"></p>
+          <!-- Mensaje de respuesta -->
+        </div>
+
+        <div class="input-container hidden">
+          <h1>3. Ingrese el resultado n3</h1>
+          <img src="img/cuenta3.png" alt="Cuenta 3" width="150" />
+          <input class="input-type" type="number" id="n3" />
+          <button class="input-button">Enviar</button>
+          <p class="feedback"></p>
+          <!-- Mensaje de respuesta -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contacto">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>23M Labs</h3>
+          <p>
+            Centro de Investigación Botánica dedicado al estudio de especies
+            urbanas y fenómenos ecológicos misteriosos.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Contacto</h3>
+          <p>📧 contacto@23mlabs.org</p>
+          <p>📍 Ciudad de Mendoza, Argentina</p>
+        </div>
+        <div class="footer-section">
+          <h3>Enlaces</h3>
+          <p><a href="#proyecto">La Plaga Azul</a></p>
+          <p><a href="#tarea">Tu Misión</a></p>
+          <p><a href="#contacto">Contacto</a></p>
+        </div>
+        <div class="footer-section">
+          <h3>Síguenos</h3>
+          <p><a href="#">Twitter</a></p>
+          <p><a href="#">LinkedIn </a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; 2024 23mlabs. Todos los derechos reservados. | Proyecto
+          Botánico Experimental
+        </p>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
