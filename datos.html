@@ -20,15 +20,13 @@
         Tus respuestas fueron: <strong>8</strong>, <strong>4</strong> y
         <strong>0</strong>.
       </p>
-      <p>
-        Utiliza este número para desbloquear el siguiente paso.
-      </p>
+      <p>Utiliza este número para desbloquear el siguiente paso.</p>
     </div>
   </div>
   <body>
     <header>
       <nav>
-        <a href="./index.html" class="logo"><img src="./RANA.png"/>23M Labs</a>
+        <a href="./index.html" class="logo"><img src="./RANA.png" />23M Labs</a>
         <ul class="nav-links">
           <li><a href="#proyecto">La Plaga Azul</a></li>
           <li><a href="#tarea">Tu Misión</a></li>
@@ -50,10 +48,41 @@
 
     <!-- Main Content -->
     <main>
+      <h3 class="flores-title">Elije el patrón correcto</h3>
+      <div class="cards-grid cards-flores">
+        <button class="card flores-card">
+          <span class="card-icon"><img src="FLORES.png" alt="" /></span>
+        </button>
+        <button class="card flores-card">
+          <span class="card-icon"><img src="flores2.png" alt="" /></span>
+        </button>
+        <button class="card flores-card">
+          <span class="card-icon"><img src="flores3.png" alt="" /></span>
+        </button>
+      </div>
+        <div
+          id="timerDisplay"
+          style="
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: red;
+          "
+        ></div>
+        <div
+          id="globalError"
+          style="
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: red;
+            font-size: 18px;
+          "
+        ></div>
       <div class="inputs-container">
         <div class="input-container">
+          <p>Dato: El pH óptimo de la plaga es de 6.5</p>
           <h1>1. Ingrese el resultado n1</h1>
-          <img src="img/cuenta1.png" alt="Cuenta 1" width="150" />
           <input class="input-type" type="number" id="n1" />
           <button class="input-button">Enviar</button>
           <p class="feedback"></p>
@@ -62,7 +91,6 @@
 
         <div class="input-container hidden">
           <h1>2. Ingrese el resultado n2</h1>
-          <img src="img/cuenta2.png" alt="Cuenta 2" width="150" />
           <input class="input-type" type="number" id="n2" />
           <button class="input-button">Enviar</button>
           <p class="feedback"></p>
@@ -71,7 +99,6 @@
 
         <div class="input-container hidden">
           <h1>3. Ingrese el resultado n3</h1>
-          <img src="img/cuenta3.png" alt="Cuenta 3" width="150" />
           <input class="input-type" type="number" id="n3" />
           <button class="input-button">Enviar</button>
           <p class="feedback"></p>

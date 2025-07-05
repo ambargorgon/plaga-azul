@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>23m - La Plaga Azul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Potta+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav>
+        <a href="./index.html" class="logo"><img src="./RANA.png" />23M Labs</a>
+      </nav>
+    </header>
+
+    <!-- Banner/Hero Section -->
+    <section class="hero" id="inicio">
+      <div class="hero-content">
+        <h1>
+          1 PLAGA, <br />
+          1 INVESTIGADOR,<br />
+          1 RESPUESTA CORRECTA
+        </h1>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+      <div class="container">
+        <!-- Proyecto Section -->
+        <section class="section" id="proyecto">
+          <h2>¿Cuál es el nombre científico de la plaga?</h2>
+          <div class="cards-grid">
+            <div class="input-container">
+              <h1>1. Ingrese el resultado</h1>
+              <input class="input-type" type="text" id="final" />
+              <button class="input-button">Enviar</button>
+              <p class="feedback"></p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contacto">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>23M Labs</h3>
+          <p>
+            Centro de Investigación Botánica dedicado al estudio de especies
+            urbanas y fenómenos ecológicos misteriosos.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Contacto</h3>
+          <p>📧 contacto@23mlabs.org</p>
+          <p>📍 Ciudad de Mendoza, Argentina</p>
+        </div>
+        <div class="footer-section">
+          <h3>Enlaces</h3>
+          <p><a href="#proyecto">La Plaga Azul</a></p>
+          <p><a href="#tarea">Tu Misión</a></p>
+          <p><a href="#contacto">Contacto</a></p>
+        </div>
+        <div class="footer-section">
+          <h3>Síguenos</h3>
+          <p><a href="#">Twitter</a></p>
+          <p><a href="#">LinkedIn </a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; 2024 23mlabs. Todos los derechos reservados. | Proyecto
+          Botánico Experimental
+        </p>
+      </div>
+    </footer>
+
+    <!-- Modal Final -->
+    <div id="modalFinalChinchu" class="modal-chinchu hidden">
+      <div class="modal-chinchu-content">
+        <span id="cerrarModalChinchu" class="cerrar-chinchu">&times;</span>
+
+        <div id="contenedorConfetti" class="confetti-chinchu-wrapper hidden">
+          <h2>🎉 ¡Correcto! Has completado la misión 🎉</h2>
+          <canvas id="canvasConfetti" width="400" height="300"></canvas>
+        </div>
+
+        <div id="contenedorError" class="error-chinchu-wrapper hidden">
+          <h2>❌ La palabra ingresada no es correcta.</h2>
+          <p>Vuelve a intentarlo con atención al mensaje.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tu script principal -->
+    <script src="./script.js"></script>
+  </body>
+</html>
