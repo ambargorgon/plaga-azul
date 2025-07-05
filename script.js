@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Para distinguir qué página está cargada:
-  // Si tenemos inputs múltiples (3 inputs), o el input final único.
+  // Selecciones generales
   const inputButtons = document.querySelectorAll(".input-button");
   const inputFields = document.querySelectorAll(".input-type");
   const inputContainers = document.querySelectorAll(".input-container");
@@ -9,81 +8,122 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerDisplay = document.getElementById("timerDisplay");
   const globalError = document.getElementById("globalError");
 
-  // Para modal final del input único:
+  // Modal final
   const modalFinal = document.getElementById("modalFinalChinchu");
   const cerrarModalBtn = document.getElementById("cerrarModalChinchu");
 
-  // Respuestas para los inputs múltiples (3 inputs)
+  // Respuestas
   const respuestasNumericas = [8, 4, 0];
-  // Respuesta para el input final (texto)
   const respuestaTextoFinal = "chinchunihuinchu";
 
-  // Variables de bloqueo y conteo intentos
+  // Estados
   let bloqueoGlobal = false;
-  const tiempoEspera = 60; // segundos
+  const tiempoEspera = 60;
   let tiempoRestante = tiempoEspera;
   let timerInterval;
 
-  // Para contar intentos por input
   let intentosPorInput = Array(inputFields.length).fill(0);
 
-  // Solo si están presentes los inputs múltiples:
+  // --- CASO: Inputs múltiples (3 inputs numéricos) ---
   if (inputFields.length > 1) {
-    // Inicializar: esconder todos los inputs excepto el primero
-    inputContainers.forEach((container, i) => {
-      if (i !== 0) container.classList.add("hidden");
-    });
+    // Al cargar solo mostrar botones (inputs ocultos)
+    inputContainers.forEach(container => container.classList.add("hidden"));
 
-    inputButtons.forEach((button, index) => {
-      button.addEventListener("click", () => {
+    // Bloquear inputs y botones (excepto botones inicialmente desbloqueados)
+    bloquearInputs();
+    desbloquearBotones();
+
+    // Eventos para botones (flores)
+    // Solo el botón en índice 2 es correcto
+    const cardButtons = document.querySelectorAll(".flores-card"); // suponiendo clase en botones
+
+    if (cardButtons.length === 0) {
+      console.warn("No se encontraron botones con clase '.flores-card'");
+    }
+
+    cardButtons.forEach((btn, idx) => {
+      btn.disabled = false; // aseguramos desbloqueados al iniciar
+      btn.addEventListener("click", () => {
         if (bloqueoGlobal) return;
 
-        const userInput = inputFields[index].value.trim();
+        if (idx === 2) {
+          // Botón correcto
+          globalError.textContent = "";
+          desbloquearInputs(0);
+          inputContainers[0].classList.remove("hidden");
+          bloquearBotonesExcepto(idx);
+        } else {
+          // Botón incorrecto
+          bloquearTodosLosInputs();
+          bloquearBotones();
+          globalError.textContent = "❌ Esta no es la flor correcta. Intenta después del tiempo de espera.";
+          iniciarContador(() => {
+            desbloquearBotones();
+            desbloquearInputs(0);
+            globalError.textContent = "";
+          });
+        }
+      });
+    });
 
-        const feedback = feedbackMessages[index];
+    // Eventos para inputs numéricos
+    inputButtons.forEach((btn, idx) => {
+      btn.disabled = true; // bloquear botones inputs al inicio
 
-        // Validamos solo los primeros 3 inputs numéricos
-        if (index < respuestasNumericas.length) {
-          if (compararResultadosNumericos(userInput, respuestasNumericas[index])) {
-            feedback.textContent = "✔️ Respuesta correcta";
-            feedback.classList.remove("incorrect");
-            feedback.classList.add("correct");
+      btn.addEventListener("click", () => {
+        if (bloqueoGlobal) return;
 
-            // Mostrar siguiente input si hay
-            if (index + 1 < inputContainers.length) {
-              inputContainers[index + 1].classList.remove("hidden");
-            } else {
-              // Ya completó los 3 inputs, mostramos modal o mensaje
-              // Aquí podrías llamar a mostrarModal o algo similar
-              alert("¡Completaste los tres inputs correctamente! Usa el número para el siguiente paso.");
-            }
+        const valor = inputFields[idx].value.trim();
+        const feedback = feedbackMessages[idx];
+
+        if (compararNumeros(valor, respuestasNumericas[idx])) {
+          // Correcto
+          feedback.textContent = "✔️ Respuesta correcta";
+          feedback.classList.remove("incorrect");
+          feedback.classList.add("correct");
+
+          // Mostrar siguiente input y desbloquear su botón
+          if (idx + 1 < inputContainers.length) {
+            inputContainers[idx + 1].classList.remove("hidden");
+            desbloquearInputs(idx + 1);
           } else {
-            // Incorrecto: manejar intentos y bloqueo
-            intentosPorInput[index]++;
-            if (intentosPorInput[index] === 1) {
-              feedback.textContent = "❌ Incorrecto. Espera 60 segundos para intentar de nuevo.";
-              feedback.classList.remove("correct");
-              feedback.classList.add("incorrect");
-              bloquearTodosLosInputs();
-              iniciarContador();
-            } else {
-              feedback.textContent = "❌ Incorrecto. Se acabaron los intentos.";
-              feedback.classList.remove("correct");
-              feedback.classList.add("incorrect");
-              button.disabled = true;
-              inputFields[index].disabled = true;
-            }
+            alert("¡Completaste los tres inputs correctamente! Usa el número para el siguiente paso.");
+          }
+          // Desactivar el botón e input actual para evitar reintentos
+          btn.disabled = true;
+          inputFields[idx].disabled = true;
+        } else {
+          // Incorrecto
+          intentosPorInput[idx]++;
+          if (intentosPorInput[idx] === 1) {
+            feedback.textContent = "❌ Incorrecto. Espera 60 segundos para intentar de nuevo.";
+            feedback.classList.remove("correct");
+            feedback.classList.add("incorrect");
+            bloquearTodosLosInputs();
+            iniciarContador(() => {
+              desbloquearInputs(idx);
+              feedback.textContent = "🔄 Intenta nuevamente.";
+            });
+          } else {
+            feedback.textContent = "❌ Incorrecto. Se acabaron los intentos.";
+            feedback.classList.remove("correct");
+            feedback.classList.add("incorrect");
+            btn.disabled = true;
+            inputFields[idx].disabled = true;
           }
         }
       });
     });
   }
 
-  // Si solo está el input final (texto)
+  // --- CASO: Input final de texto (único input visible) ---
   if (inputFields.length === 1 && inputFields[0].type === "text") {
     const buttonFinal = inputButtons[0];
     const inputFinal = inputFields[0];
     const feedbackFinal = feedbackMessages[0];
+
+    buttonFinal.disabled = false;
+    inputFinal.disabled = false;
 
     buttonFinal.addEventListener("click", () => {
       if (bloqueoGlobal) return;
@@ -102,7 +142,10 @@ document.addEventListener("DOMContentLoaded", () => {
           feedbackFinal.classList.remove("correct");
           feedbackFinal.classList.add("incorrect");
           bloquearTodosLosInputs();
-          iniciarContador();
+          iniciarContador(() => {
+            desbloquearTodosLosInputs();
+            feedbackFinal.textContent = "🔄 Intenta nuevamente.";
+          });
         } else {
           feedbackFinal.textContent = "❌ Incorrecto. Se acabaron los intentos.";
           feedbackFinal.classList.remove("correct");
@@ -127,31 +170,65 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Funciones bloqueo y desbloqueo (aplican para ambos casos)
+  // FUNCIONES AUXILIARES
+
   function bloquearTodosLosInputs() {
     bloqueoGlobal = true;
-    inputButtons.forEach((button) => (button.disabled = true));
-    inputFields.forEach((input) => (input.disabled = true));
+    inputButtons.forEach(btn => (btn.disabled = true));
+    inputFields.forEach(input => (input.disabled = true));
   }
 
   function desbloquearTodosLosInputs() {
     bloqueoGlobal = false;
-    inputButtons.forEach((button, index) => {
-      if (intentosPorInput[index] < 2) {
-        button.disabled = false;
-        inputFields[index].disabled = false;
+    inputButtons.forEach((btn, i) => {
+      if (intentosPorInput[i] < 2) {
+        btn.disabled = false;
+        inputFields[i].disabled = false;
       }
     });
   }
 
-  // Temporizador común
-  function iniciarContador() {
+  function bloquearBotones() {
+    const cardButtons = document.querySelectorAll(".flores-card");
+    cardButtons.forEach(btn => btn.disabled = true);
+  }
+
+  function desbloquearBotones() {
+    const cardButtons = document.querySelectorAll(".flores-card");
+    cardButtons.forEach(btn => btn.disabled = false);
+  }
+
+  // Bloquear botones excepto el correcto (por ejemplo índice 2)
+  function bloquearBotonesExcepto(indiceCorrecto) {
+    const cardButtons = document.querySelectorAll(".flores-card");
+    cardButtons.forEach((btn, idx) => {
+      btn.disabled = idx !== indiceCorrecto;
+    });
+  }
+
+  function bloquearInputs() {
+    inputButtons.forEach(btn => (btn.disabled = true));
+    inputFields.forEach(input => (input.disabled = true));
+  }
+
+  function desbloquearInputs(indice) {
+    if (intentosPorInput[indice] < 2) {
+      inputButtons[indice].disabled = false;
+      inputFields[indice].disabled = false;
+    }
+  }
+
+  // Temporizador con callback para acción al terminar
+  function iniciarContador(callback) {
     clearInterval(timerInterval);
     tiempoRestante = tiempoEspera;
+
     if (timerDisplay && globalError) {
       timerDisplay.textContent = `Debes esperar ${tiempoRestante} segundos...`;
       globalError.textContent = `⏳ Has sido bloqueado. Debes esperar ${tiempoRestante} segundos.`;
     }
+
+    bloqueoGlobal = true;
 
     timerInterval = setInterval(() => {
       tiempoRestante--;
@@ -165,25 +242,20 @@ document.addEventListener("DOMContentLoaded", () => {
           timerDisplay.textContent = "";
           globalError.textContent = "";
         }
-        desbloquearTodosLosInputs();
-
-        feedbackMessages.forEach((feedback, index) => {
-          if (intentosPorInput[index] < 2) {
-            feedback.textContent = "🔄 Intenta nuevamente.";
-          }
-        });
+        bloqueoGlobal = false;
+        if (typeof callback === "function") callback();
       }
     }, 1000);
   }
 
-  // Función para comparar números con tolerancia
-  function compararResultadosNumericos(input, correcto) {
-    const numeroInput = parseFloat(input);
-    if (isNaN(numeroInput)) return false;
-    return Math.abs(numeroInput - correcto) < 0.0001;
+  // Comparar números con tolerancia
+  function compararNumeros(input, correcto) {
+    const n = parseFloat(input);
+    if (isNaN(n)) return false;
+    return Math.abs(n - correcto) < 0.0001;
   }
 
-  // Función para mostrar modal (solo en el input final)
+  // Mostrar modal final
   function mostrarModal(esCorrecto = true) {
     if (!modalFinal) return;
 
@@ -193,16 +265,16 @@ document.addEventListener("DOMContentLoaded", () => {
     modalFinal.classList.remove("hidden");
 
     if (esCorrecto) {
-      if(confetti) confetti.classList.remove("hidden");
-      if(error) error.classList.add("hidden");
+      if (confetti) confetti.classList.remove("hidden");
+      if (error) error.classList.add("hidden");
       lanzarConfeti();
     } else {
-      if(confetti) confetti.classList.add("hidden");
-      if(error) error.classList.remove("hidden");
+      if (confetti) confetti.classList.add("hidden");
+      if (error) error.classList.remove("hidden");
     }
   }
 
-  // Función para lanzar confeti (idéntica a tu implementación)
+  // Confetti
   function lanzarConfeti() {
     const canvas = document.getElementById("canvasConfetti");
     if (!canvas) return;
